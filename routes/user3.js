@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose=require('mongoose');
+require('dotenv').config();
 
 const userschema=mongoose.Schema({
   username:String,
@@ -11,8 +12,13 @@ const userschema=mongoose.Schema({
   date: { type: Date, default: Date.now }
 })
 const model=mongoose.model("usermodel",userschema)
-mongoose.connect("mongodb+srv://suman:suman123456@cluster0.zetavyr.mongodb.net/")
-/* GET users listing. */
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
+
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
